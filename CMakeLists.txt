@@ -16,20 +16,11 @@
 
 
 # use cmake 3.7 or later
-cmake_minimum_required (VERSION 3.7)
+cmake_minimum_required (VERSION 3.19 FATAL_ERROR)
 
-project(artdaq-runcontrol-gui)
+find_package(cetmodules 3.16.00 REQUIRED)
 
-# cetbuildtools contains our cmake modules
-SET ( CETBUILDTOOLS_VERSION $ENV{CETBUILDTOOLS_VERSION} )
-IF (NOT CETBUILDTOOLS_VERSION)
-  MESSAGE (FATAL_ERROR "ERROR: setup cetbuildtools to get the cmake modules")
-ENDIF()
-
-set(CMAKE_MODULE_PATH
-  $ENV{CETBUILDTOOLS_DIR}/Modules
-  ${CMAKE_MODULE_PATH})
-
+project(artdaq-runcontrol-gui VERSION 1.04.00)
 
 include(CetCMakeEnv)
 cet_cmake_env()
@@ -46,11 +37,10 @@ IF ( SANITIZE_ADDRESS )
   cet_add_compiler_flags(-fsanitize=address -Wno-unused-command-line-argument -fno-omit-frame-pointer)
 ENDIF()
 
-cet_report_compiler_flags()
+#cet_report_compiler_flags()
 
 # these are minimum required versions, not the actual product versions
 #find_ups_product( TRACE v3_09_01 )
-find_ups_product( cetbuildtools v5_08_01 )
 
 set(TOP_CMAKE_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR})
 
@@ -60,8 +50,5 @@ include(CetTest)
 add_subdirectory(artdaq-runcontrol)
 # add_subdirectory(test)
 
-# ups - table and config files
-add_subdirectory(ups)
 
-# packaging utility
-include(UseCPack)
+cet_cmake_config()
